@@ -1,1 +1,24 @@
+CREATE TABLE users (
+    id SERIAL PRIMARY KEY,
+    email TEXT UNIQUE NOT NULL,
+    password_hash TEXT NOT NULL,
+    created_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE chat_sessions (
+    id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(id),
+    started_at TIMESTAMP DEFAULT NOW()
+);
+
+CREATE TABLE appointments (
+    id SERIAL PRIMARY KEY,
+    user_id INT REFERENCES users(id),
+    appointment_date DATE NOT NULL,
+    appointment_time TIME NOT NULL,
+    status TEXT DEFAULT 'confirmed'
+);
+
+CREATE INDEX idx_users_email ON users(email);
+CREATE INDEX idx_appointments_user ON appointments(user_id);
 
